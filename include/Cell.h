@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #ifndef CELL_H
 #define CELL_H
 
@@ -15,54 +7,54 @@
 
 class Cell
 {
-    public:
+public:
 
-				CellAggregate aggregate;
+    CellAggregate aggregate;
 
-        int id;
-        int cols;
+    int id;
+    int cols;
 
-        /** Default constructor */
-        Cell();
-        /** Default destructor */
-        virtual ~Cell();
-        /** Copy constructor
-         *  \param other Object to copy from
-         */
-        Cell(const Cell& other);
-        /** Assignment operator
-         *  \param other Object to assign from
-         *  \return A reference to this
-         */
-        Cell& operator=(const Cell& other);
+    /** Default constructor */
+    Cell();
+    /** Default destructor */
+    virtual ~Cell();
+    /** Copy constructor
+     *  \param other Object to copy from
+     */
+    Cell(const Cell& other);
+    /** Assignment operator
+     *  \param other Object to assign from
+     *  \return A reference to this
+     */
+    Cell& operator=(const Cell& other);
 
-        vector<string> columns;
+    vector<string> columns;
 
-        Cell(int cols);
+    Cell(int cols);
 
-        string valueAt(int pos);
-        void setValueAt(int pos,string val);
+    string valueAt(int pos);
+    void setValueAt(int pos,string val);
 
-        void setDimensions(vector<string> d);
-        void setDimensions(string value,char delim);
+    void setDimensions(vector<string> d);
+    void setDimensions(string value,char delim);
 
-        Cell* upperBound(CubeTable* table);
-        Cell* lowerBound(CubeTable* table);
+    Cell* upperBound(CubeTable* table);
+    Cell* lowerBound(CubeTable* table);
 
-        bool operator<( const Cell& val ) const;
+    bool operator<( const Cell& val ) const;
 
-        bool operator!=( const Cell& val ) const;
+    bool operator!=( const Cell& val ) const;
 
-        void print();
+    void print();
 
-        string toString();
+    string toString();
 
-        int lastNonStarDimension();
+    int lastNonStarDimension();
 
-    protected:
+protected:
 
 
-    private:
+private:
 };
 
 #endif // CELL_H

@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #ifndef CUBETABLE_H
 #define CUBETABLE_H
 
@@ -17,45 +9,45 @@
 class CubeTable
 {
 
-        vector<string> m_dimensions;
-        vector<string> m_measures;
+    vector<string> m_dimensions;
+    vector<string> m_measures;
 
-    public:
+public:
 
-        vector< vector <string> > indexes;
-        vector < vector <string> > table;
+    vector< vector <string> > indexes;
+    vector < vector <string> > table;
 
-        /** Default constructor */
-        CubeTable();
+    /** Default constructor */
+    CubeTable();
 
-        CubeTable(const CubeTable& other);
+    CubeTable(const CubeTable& other);
 
-        CubeTable& operator=(const CubeTable& rhs);
-				CubeTable(CubeTable& other,string value,int index);
+    CubeTable& operator=(const CubeTable& rhs);
+    CubeTable(CubeTable& other,string value,int index);
 
-        /** Default destructor */
-        virtual ~CubeTable();
+    /** Default destructor */
+    virtual ~CubeTable();
 
-        void getAllUniqueValues(int coloumn,vector<string> *values);
+    void getAllUniqueValues(int coloumn,vector<string> *values);
 
-        void computeAggregate(vector<string>& cols,CellAggregate* aggregateValue,
-															vector<string>& dcols,CellAggregate* daggregateValue);
+    void computeAggregate(vector<string>& cols,CellAggregate* aggregateValue,
+                          vector<string>& dcols,CellAggregate* daggregateValue);
 
-        void computeIndexes();
+    void computeIndexes();
 
-        int dimensionCount();
+    int dimensionCount();
 
-        int rowCount();
+    int rowCount();
 
-        void addCol(string col);
-        void addMeasure(string col);
-        void addRow(vector<string>& row);
-        void addRow(string row);
+    void addCol(string col);
+    void addMeasure(string col);
+    void addRow(vector<string>& row);
+    void addRow(string row);
 
-    protected:
+protected:
 
 
-    private:
+private:
 };
 
 #endif // CUBETABLE_H

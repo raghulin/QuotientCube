@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #ifndef QCTREE_H
 #define QCTREE_H
 
@@ -14,56 +6,56 @@
 
 class QCTree
 {
-    public:
+public:
 
-        /** Default constructor */
-        QCTree();
-        /** Default destructor */
-        virtual ~QCTree();
-        /** Copy constructor
-         *  \param other Object to copy from
-         */
-        QCTree(const QCTree& other);
-        /** Assignment operator
-         *  \param other Object to assign from
-         *  \return A reference to this
-         */
-        QCTree& operator=(const QCTree& other);
+    /** Default constructor */
+    QCTree();
+    /** Default destructor */
+    virtual ~QCTree();
+    /** Copy constructor
+     *  \param other Object to copy from
+     */
+    QCTree(const QCTree& other);
+    /** Assignment operator
+     *  \param other Object to assign from
+     *  \return A reference to this
+     */
+    QCTree& operator=(const QCTree& other);
 
-            CubeTable* baseTable;
+    CubeTable* baseTable;
 
-            Cell* root;
+    Cell* root;
 
-            vector<QCTreeItem*> classes;
+    vector<QCTreeItem*> classes;
 
-            void constructTree();
-            void DFS(Cell* c,CubeTable* partition,int k,int pID);
-            void sortIntermediate();
+    void constructTree();
+    void DFS(Cell* c,CubeTable* partition,int k,int pID);
+    void sortIntermediate();
 
-            void serialize();
-            void deserialize();
-
-
-            void printTree();
-            void printTempClasses();
-
-            QCTreeNode* qctree;
-
-            void query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max);
-            void query(vector<string> s,double *agg,	unsigned long long  *count,double* min,double* max);
-
-    protected:
-
-            bool isAllTempClassesCovered();
-
-            QCTreeItem* getNextClass();
-            QCTreeItem* getClass(int id);
+    void serialize();
+    void deserialize();
 
 
-    private:
+    void printTree();
+    void printTempClasses();
 
-        int m_currentClassId;
-        int m_numberOfClasses;
+    QCTreeNode* qctree;
+
+    void query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max);
+    void query(vector<string> s,double *agg,	unsigned long long  *count,double* min,double* max);
+
+protected:
+
+    bool isAllTempClassesCovered();
+
+    QCTreeItem* getNextClass();
+    QCTreeItem* getClass(int id);
+
+
+private:
+
+    int m_currentClassId;
+    int m_numberOfClasses;
 
 };
 

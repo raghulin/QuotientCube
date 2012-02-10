@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include <iostream>
 #include "Testcase1.h"
 

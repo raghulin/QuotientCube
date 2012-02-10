@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #ifndef CELLAGG_H
 #define CELLAGG_H
 
@@ -15,62 +7,59 @@ using namespace std;
 
 class CellAggregate
 {
-    public:
+public:
 
+    //Aggregates
+    double sum;
+    long long count;
+    double min;
+    double max;
 
-				//Aggregates
-				double sum;
-				long long count;
-				double min;
-				double max;
+    /** Default constructor */
+    CellAggregate();
+    /** Default destructor */
+    virtual ~CellAggregate();
+    /** Copy constructor
+     *  \param other Object to copy from
+     */
+    CellAggregate(const CellAggregate& other);
+    /** Assignment operator
+     *  \param other Object to assign from
+     *  \return A reference to this
+     */
+    CellAggregate& operator=(const CellAggregate& other);
 
+    CellAggregate& operator+=(const CellAggregate& other);
 
+    CellAggregate& operator+=(const double& other);
 
-        /** Default constructor */
-        CellAggregate();
-        /** Default destructor */
-        virtual ~CellAggregate();
-        /** Copy constructor
-         *  \param other Object to copy from
-         */
-        CellAggregate(const CellAggregate& other);
-        /** Assignment operator
-         *  \param other Object to assign from
-         *  \return A reference to this
-         */
-        CellAggregate& operator=(const CellAggregate& other);
+    void operator+(const double& val);
 
-        CellAggregate& operator+=(const CellAggregate& other);
+    bool operator!=( const CellAggregate& val ) const;
 
-        CellAggregate& operator+=(const double& other);
+    friend ostream& operator<< (ostream &out, CellAggregate &agg)
+    {
+        out <<agg.sum << " "<<agg.count << " "<<agg.min << " "<<agg.max << " ";
+    }
+    friend istream& operator>> (istream &in, CellAggregate &agg)
+    {
+        in >> agg.sum;
+        in >> agg.count;
+        in >> agg.min;
+        in >> agg.max;
+    }
 
-        void operator+(const double& val);
+    void setInvalid()
+    {
+        m_isValid = false;
+    }
 
-				bool operator!=( const CellAggregate& val ) const;		
+    bool isValid();
 
-		    friend ostream& operator<< (ostream &out, CellAggregate &agg)
-				{
-						out <<agg.sum << " "<<agg.count << " "<<agg.min << " "<<agg.max << " ";
-				}
-		    friend istream& operator>> (istream &in, CellAggregate &agg)
-				{
-						in >> agg.sum;
-						in >> agg.count;
-						in >> agg.min;
-						in >> agg.max;
-				}
+protected:
+    bool m_isValid;
 
-				void setInvalid()
-				{
-					m_isValid = false;
-				}
-
-				bool isValid();				
-
-    protected:
-				bool m_isValid;
-
-    private:
+private:
 };
 
 #endif // CELLAGG_H

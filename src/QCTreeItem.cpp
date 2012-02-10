@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include "QCTreeItem.h"
 
 QCTreeItem::QCTreeItem()
@@ -47,7 +39,8 @@ QCTreeItem& QCTreeItem::operator=(const QCTreeItem& rhs)
     return *this;
 }
 
-bool QCTreeItem::operator<( const QCTreeItem* val ) const {
+bool QCTreeItem::operator<( const QCTreeItem* val ) const
+{
 
     Cell c = *((Cell* ) val->upperBound);
     Cell c1 = *((Cell* ) upperBound);
@@ -60,7 +53,8 @@ bool QCTreeItem::operator<( const QCTreeItem* val ) const {
     return false;
 }
 
-bool QCTreeItem::operator<( const QCTreeItem& val ) const {
+bool QCTreeItem::operator<( const QCTreeItem& val ) const
+{
 
     Cell c = *((Cell* ) val.upperBound);
     Cell c1 = *((Cell* ) upperBound);
@@ -76,10 +70,10 @@ bool QCTreeItem::operator<( const QCTreeItem& val ) const {
 void QCTreeItem::print()
 {
 
-        //cout << "Temporary Class: Id = " ;
-        cout <<  id ;
-        upperBound->print();
-        lowerBound->print();
-        cout<<" " << child << "  " <<upperBound->aggregate;
-        cout <<endl;
+    //cout << "Temporary Class: Id = " ;
+    cout <<  id ;
+    upperBound->print();
+    lowerBound->print();
+    cout<<" " << child << "  " <<upperBound->aggregate;
+    cout <<endl;
 }

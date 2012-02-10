@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include "CubeTable.h"
 
 #include <iostream>
@@ -21,7 +13,7 @@ CubeTable::CubeTable()
 
 CubeTable::~CubeTable()
 {
-		indexes.erase(indexes.begin(),indexes.end());
+    indexes.erase(indexes.begin(),indexes.end());
     m_dimensions.erase(m_dimensions.begin(),m_dimensions.end());
     m_measures.erase(m_measures.begin(),m_measures.end());
     table.erase(table.begin(),table.end());
@@ -41,13 +33,13 @@ CubeTable::CubeTable(CubeTable& other,string value,int index)
 
     vector< vector<string> >::iterator iter_ii;
 
-    for(iter_ii=other.table.begin(); iter_ii!=other.table.end();iter_ii++)
+    for(iter_ii=other.table.begin(); iter_ii!=other.table.end(); iter_ii++)
     {
         string s = (*iter_ii)[index];
 
         if(strcmp(value.c_str(),s.c_str()) == 0)
         {
-            for(int j=0;j<m_dimensions.size();j++)
+            for(int j=0; j<m_dimensions.size(); j++)
             {
                 string s = (*iter_ii)[j];
                 values[j].push_back(s);
@@ -59,7 +51,7 @@ CubeTable::CubeTable(CubeTable& other,string value,int index)
 
     m_measures = other.m_measures;
 
-    for(int j=0;j<m_dimensions.size();j++)
+    for(int j=0; j<m_dimensions.size(); j++)
     {
         std::sort( values[j].begin(), values[j].end());
         vector<string>::iterator new_end_pos;
@@ -100,7 +92,7 @@ void CubeTable::addRow(vector<string> &row)
 
 void CubeTable::addRow(string row)
 {
-  using namespace std;
+    using namespace std;
 
     vector<string> tokens;
     istringstream iss(row);
@@ -133,7 +125,7 @@ void CubeTable::getAllUniqueValues(int coloumn,vector<string> *values)
 void CubeTable::computeIndexes()
 {
     indexes.clear();
-    for(int i = 0 ; i< dimensionCount();i++)
+    for(int i = 0 ; i< dimensionCount(); i++)
     {
         vector<string> values;
         getAllUniqueValues(i,&values);
@@ -142,49 +134,49 @@ void CubeTable::computeIndexes()
 }
 
 void CubeTable::computeAggregate(vector<string>& cols,CellAggregate* aggregateValue,
-																 vector<string>& dcols,CellAggregate* daggregateValue)	
+                                 vector<string>& dcols,CellAggregate* daggregateValue)
 {
-        unsigned int cz = cols.size();
+    unsigned int cz = cols.size();
 
-            vector< vector<string> >::iterator iter_ii;
-            for(iter_ii=table.begin(); iter_ii!=table.end(); iter_ii++)
+    vector< vector<string> >::iterator iter_ii;
+    for(iter_ii=table.begin(); iter_ii!=table.end(); iter_ii++)
+    {
+        for(unsigned int i = cz ; i< (cz + m_measures.size()); i++)
+        {
+
+            unsigned int j = 0;
+
+            for(; j< cz; j++)
             {
-						        for(unsigned int i = cz ; i< (cz + m_measures.size());i++)
-						        {
-
-                unsigned int j = 0;
-
-                    for(; j< cz;j++)
-                    {
-                        if(strcmp(cols[j].c_str(),"*") != 0 && strcmp(cols[j].c_str(),(*iter_ii)[j].c_str()) != 0)
-                        {
-                            break;
-                        }
-                    }
-
-                if(j ==  cz)
+                if(strcmp(cols[j].c_str(),"*") != 0 && strcmp(cols[j].c_str(),(*iter_ii)[j].c_str()) != 0)
                 {
+                    break;
+                }
+            }
+
+            if(j ==  cz)
+            {
                 string s = (*iter_ii)[i];
                 *aggregateValue += strtod(s.c_str(),NULL);
-                }
-								
-								j = 0;
+            }
 
-                    for(; j< cz;j++)
-                    {
-                        if(strcmp(dcols[j].c_str(),"*") != 0 && strcmp(dcols[j].c_str(),(*iter_ii)[j].c_str()) != 0)
-                        {
-                            break;
-                        }
-                    }
+            j = 0;
 
-                if(j ==  cz)
+            for(; j< cz; j++)
+            {
+                if(strcmp(dcols[j].c_str(),"*") != 0 && strcmp(dcols[j].c_str(),(*iter_ii)[j].c_str()) != 0)
                 {
+                    break;
+                }
+            }
+
+            if(j ==  cz)
+            {
                 string s = (*iter_ii)[i];
                 *daggregateValue += strtod(s.c_str(),NULL);
-                }
-							}
-            }        
+            }
+        }
+    }
 }
 
 int CubeTable::rowCount()

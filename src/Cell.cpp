@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include "Cell.h"
 
 #include <iostream>
@@ -30,7 +22,7 @@ Cell::Cell(const Cell& other)
 {
     cols = other.cols;
     Cell *c1 = (Cell *)&other;
-    for(int i =0;i<cols;i++)
+    for(int i =0; i<cols; i++)
     {
         string s;
         s = c1->valueAt(i);
@@ -63,7 +55,7 @@ Cell::Cell(int cols1)
 {
     cols = cols1;
 
-    for(int i =0;i<cols;i++)
+    for(int i =0; i<cols; i++)
     {
         columns.push_back("*");
     }
@@ -81,7 +73,7 @@ void Cell::setDimensions(vector<string> d)
 
 void Cell::setDimensions(string value,char delim)
 {
-  using namespace std;
+    using namespace std;
 
     vector<string> tokens;
     istringstream iss(value);
@@ -95,7 +87,7 @@ void Cell::setDimensions(string value,char delim)
 
 string Cell::valueAt(int pos)
 {
-	return columns[pos];
+    return columns[pos];
 }
 
 
@@ -147,7 +139,7 @@ Cell* Cell::upperBound(CubeTable* table)
 
     upper->setDimensions(columns);
 
-    for(unsigned int c = 0;c < columns.size(); c++ )
+    for(unsigned int c = 0; c < columns.size(); c++ )
     {
         if(strcmp(columns[c].c_str(),"*") ==0)
         {
@@ -176,24 +168,25 @@ Cell* Cell::lowerBound(CubeTable* table)
     return lower;
 }
 
-bool Cell::operator<( const Cell& val ) const {
+bool Cell::operator<( const Cell& val ) const
+{
 
     string star = "*";
 
     Cell* c = (Cell* )&val;
     Cell* c1 = (Cell* ) this;
 
-    for(unsigned int i=0;i<columns.size();i++)
+    for(unsigned int i=0; i<columns.size(); i++)
     {
 
         if(strcmp(c1->valueAt(i).c_str(), star.c_str()) == 0
-           && strcmp(c->valueAt(i).c_str(), star.c_str()) != 0)
+                && strcmp(c->valueAt(i).c_str(), star.c_str()) != 0)
         {
             return false;
         }
 
         if(strcmp(c->valueAt(i).c_str(), star.c_str()) == 0
-           && strcmp(c1->valueAt(i).c_str(), star.c_str()) != 0)
+                && strcmp(c1->valueAt(i).c_str(), star.c_str()) != 0)
         {
             return true;
         }
@@ -205,18 +198,18 @@ bool Cell::operator<( const Cell& val ) const {
         else if(strcmp(c1->valueAt(i).c_str(),c->valueAt(i).c_str()) > 0)
         {
 
-                int position = strcmp(c->valueAt(i).c_str(),c1->valueAt(i).c_str());
-                char cc = c->valueAt(i).c_str()[position];
-                char cc1 = c1->valueAt(i).c_str()[position];
+            int position = strcmp(c->valueAt(i).c_str(),c1->valueAt(i).c_str());
+            char cc = c->valueAt(i).c_str()[position];
+            char cc1 = c1->valueAt(i).c_str()[position];
 
-                if((tolower(cc1) - tolower(cc)) > 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+            if((tolower(cc1) - tolower(cc)) > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
     return false;
@@ -227,7 +220,7 @@ void Cell::print()
 
     cout<< " <";
     unsigned int i=0;
-    for(;i < columns.size()-1;i++)
+    for(; i < columns.size()-1; i++)
     {
         cout<<columns[i] <<",";
     }
@@ -239,7 +232,7 @@ string Cell::toString()
 {
     string s = "<";
     unsigned int i=0;
-    for(;i < columns.size()-1;i++)
+    for(; i < columns.size()-1; i++)
     {
         s+= columns[i] + ",";
     }

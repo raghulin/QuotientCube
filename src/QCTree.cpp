@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include "QCTree.h"
 #include "QCTreeQuery.h"
 #include <iostream>
@@ -30,7 +22,7 @@ QCTree::~QCTree()
     delete baseTable;
     if(root)
     {
-    delete root;
+        delete root;
     }
 
     classes.erase(classes.begin(),classes.end());
@@ -53,7 +45,7 @@ void QCTree::printTempClasses()
 {
     vector <QCTreeItem*> :: const_iterator nodeIter;
 
-    for(nodeIter = classes.begin();nodeIter != classes.end();nodeIter++)
+    for(nodeIter = classes.begin(); nodeIter != classes.end(); nodeIter++)
     {
         QCTreeItem* node = *nodeIter;
         node->print();
@@ -63,15 +55,16 @@ void QCTree::printTempClasses()
 
 struct compareTreeItems
 {
-        const bool operator()(const QCTreeItem *a, const QCTreeItem * b) const {
+    const bool operator()(const QCTreeItem *a, const QCTreeItem * b) const
+    {
         /*
         a->upperBound->print();
         cout<< (*a->upperBound < *b->upperBound);
         b->upperBound->print();
         cout<<endl;
         */
-            return (*b->upperBound < *a->upperBound);
-        }
+        return (*b->upperBound < *a->upperBound);
+    }
 };
 
 
@@ -99,7 +92,7 @@ QCTreeItem* QCTree::getClass(int id)
 
     vector <QCTreeItem*> :: const_iterator nodeIter;
 
-    for(nodeIter = classes.begin();nodeIter != classes.end();nodeIter++)
+    for(nodeIter = classes.begin(); nodeIter != classes.end(); nodeIter++)
     {
         QCTreeItem* node = *nodeIter;
 
@@ -135,203 +128,203 @@ QCTreeItem* QCTree::getNextClass()
 void QCTree::constructTree()
 {
 
-        baseTable->computeIndexes();
+    baseTable->computeIndexes();
 
-		/*
-			1. b = (∗, . . . , ∗);
-		*/
-		Cell* cell = new Cell(baseTable->dimensionCount());
-		/*
-			2. call DF S(b, B, 0, −1);
-		*/
-		DFS(cell,baseTable,0,-1);
-		/*
-			3. Sort the temp classes w.r.t. upper bounds in dictionary order(‘‘∗’’ precedes other values)
-		*/
+    /*
+    	1. b = (∗, . . . , ∗);
+    */
+    Cell* cell = new Cell(baseTable->dimensionCount());
+    /*
+    	2. call DF S(b, B, 0, −1);
+    */
+    DFS(cell,baseTable,0,-1);
+    /*
+    	3. Sort the temp classes w.r.t. upper bounds in dictionary order(‘‘∗’’ precedes other values)
+    */
 
-		sortIntermediate();
+    sortIntermediate();
 
-        m_currentClassId = 0;
-        m_numberOfClasses = classes.size();
+    m_currentClassId = 0;
+    m_numberOfClasses = classes.size();
 
 
-		//Insert the temp classes one by one into QC-tree
-		/*
-			4. Create a node for the first temp class as the root;
-		*/
-		root = classes[0]->upperBound;
-		root->aggregate = classes[0]->upperBound->aggregate;
-		qctree->aggregate = root->aggregate;
-		/*
-			5. last = first temp class’s upper bound;
-		*/
+    //Insert the temp classes one by one into QC-tree
+    /*
+    	4. Create a node for the first temp class as the root;
+    */
+    root = classes[0]->upperBound;
+    root->aggregate = classes[0]->upperBound->aggregate;
+    qctree->aggregate = root->aggregate;
+    /*
+    	5. last = first temp class’s upper bound;
+    */
 
-		Cell* lastClass = classes[0]->upperBound;
+    Cell* lastClass = classes[0]->upperBound;
 
-		/*
-			6. while not all temp classes have been processed
-		*/
-		QCTreeItem* nextClass = classes[m_currentClassId];//->upperBound;
+    /*
+    	6. while not all temp classes have been processed
+    */
+    QCTreeItem* nextClass = classes[m_currentClassId];//->upperBound;
 
-        QCTreeNode* lastInserted =qctree;
-		/*not all temp classes have been processed*/
-		while(!isAllTempClassesCovered())
-		{
-			/*
-			current = next class’s upper bound;
-			*/
+    QCTreeNode* lastInserted =qctree;
+    /*not all temp classes have been processed*/
+    while(!isAllTempClassesCovered())
+    {
+        /*
+        current = next class’s upper bound;
+        */
 
-			Cell* currentClass = nextClass->upperBound;
+        Cell* currentClass = nextClass->upperBound;
 
-			if(*currentClass != *lastClass)
-			{
-			/*
-			insert nodes for current;
-			last = current;
-			*/
-			qctree->insertNodes(currentClass,&lastInserted);
-			lastClass = currentClass;
-			}
-			else
-			{
-				/*
-				Let ub be the current’s child class’s upper bound,
-				lb be the lower bound of current;
-				*/
+        if(*currentClass != *lastClass)
+        {
+            /*
+            insert nodes for current;
+            last = current;
+            */
+            qctree->insertNodes(currentClass,&lastInserted);
+            lastClass = currentClass;
+        }
+        else
+        {
+            /*
+            Let ub be the current’s child class’s upper bound,
+            lb be the lower bound of current;
+            */
 
-        QCTreeItem* currentsChild = getClass(nextClass->child);
+            QCTreeItem* currentsChild = getClass(nextClass->child);
 
-				Cell* ub = currentsChild->upperBound;
-				Cell* lb = nextClass->lowerBound;
+            Cell* ub = currentsChild->upperBound;
+            Cell* lb = nextClass->lowerBound;
 
-				/*
-				Find the first dim D s.t.ub.D = ∗ && lb.D != ∗;
-				Add a drill-down link with label D from ub to last;
-				*/
-                for(int j=0;j<baseTable->dimensionCount();j++)
+            /*
+            Find the first dim D s.t.ub.D = ∗ && lb.D != ∗;
+            Add a drill-down link with label D from ub to last;
+            */
+            for(int j=0; j<baseTable->dimensionCount(); j++)
+            {
+                if(strcmp(ub->valueAt(j).c_str(),"*") == 0 &&
+                        strcmp(lb->valueAt(j).c_str(),"*") != 0
+                  )
                 {
-                    if(strcmp(ub->valueAt(j).c_str(),"*") == 0 &&
-                       strcmp(lb->valueAt(j).c_str(),"*") != 0
-                       )
-                    {
-                        qctree->addDrillDown(lb->valueAt(j),lastInserted,ub);
-                    }
+                    qctree->addDrillDown(lb->valueAt(j),lastInserted,ub);
                 }
-			}
-			nextClass = getNextClass();
-		}
+            }
+        }
+        nextClass = getNextClass();
+    }
 
-		delete cell;
-	}
-
-
-	//c is a cell and Bc is the partition of the base table
-	void QCTree::DFS(Cell* c,CubeTable* partition,int k,int pID)
-	{
-
-		/*
-		2. Compute the upper bound d of the class c, by ‘‘jumping’’ to the appropriate upper bounds;
-		*/
-		Cell* d = c->upperBound(partition);
-
-		/*
-		1. Compute aggregate of cell c;
-		*/
-		partition->computeAggregate(c->columns,&c->aggregate,d->columns,&d->aggregate);
-		
-		/*
-		3. Record a temp class with lower bound c, upper bound d and and parent pID. Let bID be its class ID;
-		*/
-
-		QCTreeItem* item = new QCTreeItem();;
-		item->lowerBound = new Cell(*c);
-		item->upperBound = new Cell(*d);
-		item->child = pID;
-		item->id = m_numberOfClasses;
-        int bID = item->id;
-
-		classes.push_back(item);
-		m_numberOfClasses++;
-
-		/*
-		4. if there is some j < k s.t. c[j] = all and d[j] != all
-		return; //such a bound has been examined before
-		*/
-		for(int j=0;j<k;j++)
-		{
-			if(strcmp(c->valueAt(j).c_str(),"*") == 0
-            && strcmp(d->valueAt(j).c_str(),"*") != 0
-            )
-			{
-				return;
-			}
-		}
+    delete cell;
+}
 
 
-		/*
-		5. else for each k < j < n s.t. d[j] = all do
-				for each value x in dimension j of base table
-					let d[j] = x;
-					form Bd ;
-					if Bd is not empty, call DF S(d, Bd , j, bID);
-		*/
+//c is a cell and Bc is the partition of the base table
+void QCTree::DFS(Cell* c,CubeTable* partition,int k,int pID)
+{
+
+    /*
+    2. Compute the upper bound d of the class c, by ‘‘jumping’’ to the appropriate upper bounds;
+    */
+    Cell* d = c->upperBound(partition);
+
+    /*
+    1. Compute aggregate of cell c;
+    */
+    partition->computeAggregate(c->columns,&c->aggregate,d->columns,&d->aggregate);
+
+    /*
+    3. Record a temp class with lower bound c, upper bound d and and parent pID. Let bID be its class ID;
+    */
+
+    QCTreeItem* item = new QCTreeItem();;
+    item->lowerBound = new Cell(*c);
+    item->upperBound = new Cell(*d);
+    item->child = pID;
+    item->id = m_numberOfClasses;
+    int bID = item->id;
+
+    classes.push_back(item);
+    m_numberOfClasses++;
+
+    /*
+    4. if there is some j < k s.t. c[j] = all and d[j] != all
+    return; //such a bound has been examined before
+    */
+    for(int j=0; j<k; j++)
+    {
+        if(strcmp(c->valueAt(j).c_str(),"*") == 0
+                && strcmp(d->valueAt(j).c_str(),"*") != 0
+          )
+        {
+            return;
+        }
+    }
 
 
-		for(int j=k;j<partition->dimensionCount();j++)
-		{
-			if(strcmp(d->valueAt(j).c_str(),"*") ==0)
-			{
-				vector<string> x;
+    /*
+    5. else for each k < j < n s.t. d[j] = all do
+    		for each value x in dimension j of base table
+    			let d[j] = x;
+    			form Bd ;
+    			if Bd is not empty, call DF S(d, Bd , j, bID);
+    */
 
-				partition->getAllUniqueValues(j,&x);
-        //std::reverse( x.begin(), x.end());
 
-        Cell *nd = new Cell(*d);
-				for(int rows = x.size()-1; rows >= 0;rows--)
-				{
-					nd->setValueAt(j,x[rows]);
-					//form Bd - ?
-          CubeTable* Bd = new CubeTable(*partition,x[rows],j);
+    for(int j=k; j<partition->dimensionCount(); j++)
+    {
+        if(strcmp(d->valueAt(j).c_str(),"*") ==0)
+        {
+            vector<string> x;
 
-					if(Bd->table.size() != 0)
-					{
-						DFS(nd,Bd,j,bID);
-					}
-					delete Bd;
-				}
-				delete nd;
+            partition->getAllUniqueValues(j,&x);
+            //std::reverse( x.begin(), x.end());
 
-			}
-		}
+            Cell *nd = new Cell(*d);
+            for(int rows = x.size()-1; rows >= 0; rows--)
+            {
+                nd->setValueAt(j,x[rows]);
+                //form Bd - ?
+                CubeTable* Bd = new CubeTable(*partition,x[rows],j);
 
-		/*
-		6. return;
-		*/
-	}
+                if(Bd->table.size() != 0)
+                {
+                    DFS(nd,Bd,j,bID);
+                }
+                delete Bd;
+            }
+            delete nd;
+
+        }
+    }
+
+    /*
+    6. return;
+    */
+}
 
 void QCTree::serialize()
 {
-  fstream filestr;
+    fstream filestr;
 
-  filestr.open ("test.txt", fstream::out );
+    filestr.open ("test.txt", fstream::out );
 
-  qctree->serialize(&filestr);
+    qctree->serialize(&filestr);
 
-  filestr.close();
+    filestr.close();
 
 }
 
 void QCTree::deserialize()
 {
-  fstream filestr1;
+    fstream filestr1;
 
-  filestr1.open ("test.txt", fstream::in );
+    filestr1.open ("test.txt", fstream::in );
 
-  map<int,QCTreeNode*> nodemap;
+    map<int,QCTreeNode*> nodemap;
 
-  qctree->deserialize(&filestr1,&nodemap);
+    qctree->deserialize(&filestr1,&nodemap);
 
-  filestr1.close();
+    filestr1.close();
 }
 
 void QCTree::query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max)
@@ -339,13 +332,13 @@ void QCTree::query(const char* s,double *agg,	unsigned long long  *count,double*
     QCTreeQuery query;
     Cell cell;
     cell.setDimensions(s,',');
-		CellAggregate cagg;
+    CellAggregate cagg;
     bool testVal = query.pointQuery(qctree,&cell,&cagg);
 
-		*agg = cagg.sum;
-		*count = cagg.count;
-		*min = cagg.min;
-		*max = cagg.max;
+    *agg = cagg.sum;
+    *count = cagg.count;
+    *min = cagg.min;
+    *max = cagg.max;
 }
 
 void QCTree::query(vector<string> s,double *agg,unsigned long long  *count,double* min,double* max)
@@ -353,13 +346,13 @@ void QCTree::query(vector<string> s,double *agg,unsigned long long  *count,doubl
     QCTreeQuery query;
     Cell cell;
     cell.setDimensions(s);
-		CellAggregate cagg;
+    CellAggregate cagg;
     bool testVal = query.rangeQuery(qctree,&cell,&cagg);
 
-		*agg = cagg.sum;
-		*count = cagg.count;
-		*min = cagg.min;
-		*max = cagg.max;
+    *agg = cagg.sum;
+    *count = cagg.count;
+    *min = cagg.min;
+    *max = cagg.max;
 }
 
 void QCTree::printTree()

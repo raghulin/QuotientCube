@@ -1,11 +1,3 @@
-//
-// 
-// https://github.com/Imaginea/imaginea.github.com
-//
-// Created by RaghuL on 21/12/2011.
-// Copyright Imaginea 2011. All rights reserved.
-//
-
 #include "QCTreeNode.h"
 
 #include <iostream>
@@ -23,7 +15,7 @@ QCTreeNode::~QCTreeNode()
 
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator hm1_RcIter;
 
-    for(hm1_RcIter = children.begin();hm1_RcIter != children.end( );hm1_RcIter++)
+    for(hm1_RcIter = children.begin(); hm1_RcIter != children.end( ); hm1_RcIter++)
     {
         QCTreeNode* node = (QCTreeNode *) hm1_RcIter->second;
         if(node)
@@ -48,19 +40,19 @@ QCTreeNode& QCTreeNode::operator=(const QCTreeNode& rhs)
 QCTreeNode* QCTreeNode::findDrilldown(string key)
 {
 
-   hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator hm1_RcIter;
+    hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator hm1_RcIter;
 
-   hm1_RcIter = drillDowns.find(key.c_str());
+    hm1_RcIter = drillDowns.find(key.c_str());
 
 
-   if ( hm1_RcIter == drillDowns.end( ) )
-   {
-   		return NULL;
-   }
-   else
-   { 
-			return hm1_RcIter->second;
-   }
+    if ( hm1_RcIter == drillDowns.end( ) )
+    {
+        return NULL;
+    }
+    else
+    {
+        return hm1_RcIter->second;
+    }
 }
 
 QCTreeNode* QCTreeNode::findLastChildInLastDimension()
@@ -100,21 +92,21 @@ QCTreeNode* QCTreeNode::findChild(string key)
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator nodeIter;
     nodeIter = children.find(key.c_str());
 
-   if ( nodeIter == children.end() )
-   {
+    if ( nodeIter == children.end() )
+    {
         return NULL;
-   }
-   else
-   {
+    }
+    else
+    {
         return nodeIter->second;
-   }
+    }
 }
 
 QCTreeNode* QCTreeNode::searchRoute(string vi)
 {
 
 //find a route from newRoot to a node labelled vi
-QCTreeNode* newRoot = NULL;
+    QCTreeNode* newRoot = NULL;
 
 
     if(strcmp(vi.c_str(),"*")==0)
@@ -125,29 +117,29 @@ QCTreeNode* newRoot = NULL;
 
 //if newRoot has a child or link pointing to N labelled vi
 //newRoot = N ;
-newRoot = findChild(vi);
+    newRoot = findChild(vi);
 
-if(newRoot == NULL)
-{
-    newRoot = findDrilldown(vi);
-}
-
-if(newRoot == NULL)
-{
-
-    //Pick the last child N of newRoot in the last dimension, say j;
-    //if (j < the dimension of vi ) call searchRoute(N, vi );
-    //else return null;
-
-    newRoot = findLastChildInLastDimension();
-
-    if(newRoot!=NULL && dimension < newRoot->dimension)
+    if(newRoot == NULL)
     {
-        newRoot = newRoot->searchRoute(vi);
+        newRoot = findDrilldown(vi);
     }
-}
 
-return newRoot;
+    if(newRoot == NULL)
+    {
+
+        //Pick the last child N of newRoot in the last dimension, say j;
+        //if (j < the dimension of vi ) call searchRoute(N, vi );
+        //else return null;
+
+        newRoot = findLastChildInLastDimension();
+
+        if(newRoot!=NULL && dimension < newRoot->dimension)
+        {
+            newRoot = newRoot->searchRoute(vi);
+        }
+    }
+
+    return newRoot;
 
 }
 
@@ -157,7 +149,7 @@ bool QCTreeNode::insertNodes(Cell* cell1,QCTreeNode** newNode)
 
     Cell* cell = new Cell(*cell1);
 
-    for(int i=0;i< cell->cols;i++)
+    for(int i=0; i< cell->cols; i++)
     {
         if(strcmp(cell->valueAt(i).c_str(),"*") == 0)
         {
@@ -216,7 +208,7 @@ QCTreeNode* QCTreeNode::findNode(Cell* cell,int index)
         QCTreeNode* tempNode = node->findChild(cell->valueAt(index));
         if(tempNode != NULL)
         {
-        node = tempNode->findNode(cell,index+1);
+            node = tempNode->findNode(cell,index+1);
         }
 
         if(node == NULL)
@@ -248,13 +240,13 @@ void QCTreeNode::replaceDrillDowns(map<int,QCTreeNode*> *nodeMap)
 {
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: iterator nodeIter;
 
-    for(nodeIter = drillDowns.begin();nodeIter != drillDowns.end( );nodeIter++)
+    for(nodeIter = drillDowns.begin(); nodeIter != drillDowns.end( ); nodeIter++)
     {
         map<int,QCTreeNode*>::iterator it = nodeMap->find((int)nodeIter->second);
         nodeIter->second = it->second;
     }
 
-    for(nodeIter = children.begin();nodeIter != children.end( );nodeIter++)
+    for(nodeIter = children.begin(); nodeIter != children.end( ); nodeIter++)
     {
         QCTreeNode* node = (QCTreeNode *) nodeIter->second;
         node->replaceDrillDowns(nodeMap);
@@ -271,7 +263,7 @@ void QCTreeNode::deserialize(istream *sbuff,map<int,QCTreeNode*> *nodeMap)
 void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *nodeMap)
 {
     int addr;
-		string sAgg;
+    string sAgg;
 
     *sbuff >>hex>>addr;
     *sbuff >>value;
@@ -286,7 +278,7 @@ void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *no
     *sbuff >>sAgg;
     int noOfChildren=atoi(sAgg.c_str());
 
-    for(int i=0;i < noOfChildren;i++)
+    for(int i=0; i < noOfChildren; i++)
     {
         QCTreeNode *newChild = new QCTreeNode();
         newChild->deserializeNoDrillDowns(sbuff,nodeMap);
@@ -297,7 +289,7 @@ void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *no
     *sbuff >>sAgg;
     int noOfDrillDowns=atoi(sAgg.c_str());
 
-    for(int i=0;i < noOfDrillDowns;i++)
+    for(int i=0; i < noOfDrillDowns; i++)
     {
         string s;
         *sbuff >> s;
@@ -318,36 +310,36 @@ void QCTreeNode::serialize(ostream *sbuff)
 {
     *sbuff<<hex<<this<<" ";
     *sbuff<<value<<" ";
-		if(dimension != -1)
-		{
-    *sbuff<<dimension<<" ";
-		}
-		else 
-		{
-    *sbuff<<"-1 ";
-		}
-		if(dimension != -1)
-		{
-    *sbuff<<aggregate<<" ";
-		}
-		else 
-		{
-    *sbuff<<"-1 ";
-		}
+    if(dimension != -1)
+    {
+        *sbuff<<dimension<<" ";
+    }
+    else
+    {
+        *sbuff<<"-1 ";
+    }
+    if(dimension != -1)
+    {
+        *sbuff<<aggregate<<" ";
+    }
+    else
+    {
+        *sbuff<<"-1 ";
+    }
 
     *sbuff<<aggregate<<" ";
 
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator hm1_RcIter;
 
     *sbuff<<children.size()<<" ";
-    for(hm1_RcIter = children.begin();hm1_RcIter != children.end( );hm1_RcIter++)
+    for(hm1_RcIter = children.begin(); hm1_RcIter != children.end( ); hm1_RcIter++)
     {
         QCTreeNode* node = (QCTreeNode *) hm1_RcIter->second;
         node->serialize(sbuff);
     }
 
     *sbuff<<drillDowns.size()<<" ";
-    for(hm1_RcIter = drillDowns.begin();hm1_RcIter != drillDowns.end( );hm1_RcIter++)
+    for(hm1_RcIter = drillDowns.begin(); hm1_RcIter != drillDowns.end( ); hm1_RcIter++)
     {
         QCTreeNode* node = (QCTreeNode *) hm1_RcIter->second;
         *sbuff << (hm1_RcIter->first) <<" ";
@@ -357,14 +349,14 @@ void QCTreeNode::serialize(ostream *sbuff)
 
 void QCTreeNode::printToStream(fstream *pfout)
 {
-		
+
     *pfout << " -------------- TREE Node: " << value << " "<< aggregate <<endl;
 
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator nodeIter;
 
     *pfout << "TREE Node Children: ";
 
-    for(nodeIter = children.begin();nodeIter != children.end( );nodeIter++)
+    for(nodeIter = children.begin(); nodeIter != children.end( ); nodeIter++)
     {
         QCTreeNode* node = (QCTreeNode *) nodeIter->second;
         *pfout << " " <<node->value << " ";
@@ -372,14 +364,14 @@ void QCTreeNode::printToStream(fstream *pfout)
 
     *pfout <<endl<< "TREE Node Drilldowns: ";
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator dds;
-    for(dds = drillDowns.begin();dds != drillDowns.end();dds++)
+    for(dds = drillDowns.begin(); dds != drillDowns.end(); dds++)
     {
         QCTreeNode* node = (QCTreeNode *) dds->second;
         *pfout << (dds->first)<<"--->"<<(node->value) << "     ";
     }
     *pfout << endl<<" -------------- TREE Node ---------------------- "<<endl;
 
-    for(nodeIter = children.begin();nodeIter != children.end( );nodeIter++)
+    for(nodeIter = children.begin(); nodeIter != children.end( ); nodeIter++)
     {
         QCTreeNode* node = (QCTreeNode *) nodeIter->second;
         node->printToStream(pfout);
@@ -395,7 +387,7 @@ void QCTreeNode::print()
 
     cout << "TREE Node Children: ";
 
-    for(nodeIter = children.begin();nodeIter != children.end( );nodeIter++)
+    for(nodeIter = children.begin(); nodeIter != children.end( ); nodeIter++)
     {
         QCTreeNode* node = (QCTreeNode *) nodeIter->second;
         cout << " " <<node->value << " ";
@@ -403,14 +395,14 @@ void QCTreeNode::print()
 
     cout <<endl<< "TREE Node Drilldowns: ";
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator dds;
-    for(dds = drillDowns.begin();dds != drillDowns.end();dds++)
+    for(dds = drillDowns.begin(); dds != drillDowns.end(); dds++)
     {
         QCTreeNode* node = (QCTreeNode *) dds->second;
         cout << (dds->first)<<"--->"<<(node->value) << "     ";
     }
     cout << endl<<" -------------- TREE Node ---------------------- "<<endl;
 
-    for(nodeIter = children.begin();nodeIter != children.end( );nodeIter++)
+    for(nodeIter = children.begin(); nodeIter != children.end( ); nodeIter++)
     {
         QCTreeNode* node = (QCTreeNode *) nodeIter->second;
         node->print();
