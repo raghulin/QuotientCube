@@ -2,10 +2,14 @@
   returns the cube of the values in a distribution
 
   input parameters:
-	select ccube(a,b,c,s) from Q4;
+	select ccube(Measure1,Measure2,...,Dimension) from Q4;
 
-  output:
-	select ccube_query("*");
+  output examples:
+	Point Queries:
+        select ccube_query("*");
+        select ccube_query("M1,"M2","M3"...);
+    Range Queries:
+        select ccube_query("m12 m13,m21 m23,m31 m32");
 
   registering the function:
 	CREATE AGGREGATE FUNCTION ccube RETURNS INTEGER SONAME 'ccube_udf.so';
@@ -61,7 +65,7 @@ struct ccube_data
     unsigned int dimensions;
     unsigned int measures;
     QCTree* tree;
-    char* output;
+    char* aggValues;
 };
 
 my_bool ccube_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
@@ -106,7 +110,6 @@ void ccube_add( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error 
     for(int i = 0 ; i < (buffer->dimensions + buffer->measures); i++)
     {
         char* s = (char*) malloc(args->lengths[i]);
-        //strncpy(s,args->args[i], args->lengths[i] );
         memcpy(s,args->args[i], args->lengths[i]);
         s[args->lengths[i]] = '\0';
         v.push_back(s);
@@ -128,7 +131,12 @@ my_bool ccube_query_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
     buffer->tree = new QCTree();
 
     initid->maybe_null	= 1;
-    initid->max_length	= 32;
+    initid->max_length	= 80;
+
+    buffer->aggValues = (char*) malloc(80);
+    bzero(buffer->aggValues,80);
+    buffer->aggValues[79] = '\0';
+
     initid->ptr = (char*)buffer;
 
     return 0;
@@ -138,8 +146,9 @@ void ccube_query_deinit( UDF_INIT* initid )
 {
     ccube_data *buffer = (ccube_data*)initid->ptr;
 
-    delete buffer->output;
     delete buffer->tree->qctree;
+    delete buffer->aggValues;
+
     delete buffer;
 
 }
@@ -161,7 +170,10 @@ char* ccube_query( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char *error 
         char s[100];
         strncpy( s, args->args[0], args->lengths[0] );
         s[args->lengths[0]] = '\0';
-        tree->query(s,&sum,&count,&min,&max);
+        if(!tree->query(s,&sum,&count,&min,&max))
+        {
+            return NULL;
+        }
     }
     else
     {
@@ -174,15 +186,14 @@ char* ccube_query( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char *error 
             s[args->lengths[i]] = '\0';
             v.push_back(s);
         }
-        tree->query(v,&sum,&count,&min,&max);
+        if(!tree->query(v,&sum,&count,&min,&max))
+        {
+            return NULL;
+        }
     }
 
-    buffer->output = (char*) malloc(80);
-    bzero(buffer->output,80);
-    int len = sprintf(buffer->output,"SUM = %f Count = %lld Min = %f Max = %f",sum,count,min,max);
-    buffer->output[len] = '\n';
-    buffer->output = (char *)realloc(buffer->output,len);
-    return buffer->output;
+    sprintf(buffer->aggValues,"SUM = %f Count = %lld Min = %f Max = %f \0",sum,count,min,max);
+    return buffer->aggValues;
 }
 
 #endif

@@ -28,6 +28,12 @@ CellAggregate& CellAggregate::operator=(const CellAggregate& rhs)
 {
     if (this == &rhs) return *this; // handle self assignment
     //assignment operator
+    sum	 = rhs.sum;
+    count = rhs.count;
+    min = rhs.min;
+    max = rhs.max;
+    //m_isValid = rhs.isValid();
+
     return *this;
 }
 
@@ -74,7 +80,6 @@ void CellAggregate::operator+(const double& val)
     {
         min = val;
         max = val;
-        m_isValid = true;
     }
     else
     {
@@ -87,6 +92,8 @@ void CellAggregate::operator+(const double& val)
 
     sum	 += val;
     count++;
+
+    m_isValid = true;
 }
 
 bool CellAggregate::operator!=( const CellAggregate& val ) const

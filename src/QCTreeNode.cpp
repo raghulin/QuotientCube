@@ -272,7 +272,6 @@ void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *no
     dimension = atoi(sAgg.c_str());
 
     *sbuff >>aggregate;
-
     nodeMap->insert(pair<int,QCTreeNode*>(addr,this));
 
     *sbuff >>sAgg;
@@ -318,16 +317,8 @@ void QCTreeNode::serialize(ostream *sbuff)
     {
         *sbuff<<"-1 ";
     }
-    if(dimension != -1)
-    {
-        *sbuff<<aggregate<<" ";
-    }
-    else
-    {
-        *sbuff<<"-1 ";
-    }
 
-    *sbuff<<aggregate<<" ";
+    *sbuff<<aggregate;
 
     hash_map <const char*, QCTreeNode*, hash<const char*>, eqstr1> :: const_iterator hm1_RcIter;
 

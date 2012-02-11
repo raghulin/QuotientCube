@@ -41,8 +41,8 @@ public:
 
     QCTreeNode* qctree;
 
-    void query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max);
-    void query(vector<string> s,double *agg,	unsigned long long  *count,double* min,double* max);
+    bool query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max);
+    bool query(vector<string> s,double *agg,	unsigned long long  *count,double* min,double* max);
 
 protected:
 

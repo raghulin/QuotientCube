@@ -306,7 +306,11 @@ void QCTree::serialize()
 {
     fstream filestr;
 
-    filestr.open ("test.txt", fstream::out );
+    //TODO:
+    // 1. get table name from UDF. Serialize with table name.
+    // 2. store in memory table
+
+    filestr.open ("qctree.txt", fstream::out );
 
     qctree->serialize(&filestr);
 
@@ -318,7 +322,11 @@ void QCTree::deserialize()
 {
     fstream filestr1;
 
-    filestr1.open ("test.txt", fstream::in );
+    //TODO:
+    // 1. get table name from UDF. Serialize with table name.
+    // 2. read from in memory table
+
+    filestr1.open ("qctree.txt", fstream::in );
 
     map<int,QCTreeNode*> nodemap;
 
@@ -327,32 +335,36 @@ void QCTree::deserialize()
     filestr1.close();
 }
 
-void QCTree::query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max)
+bool QCTree::query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max)
 {
     QCTreeQuery query;
     Cell cell;
     cell.setDimensions(s,',');
     CellAggregate cagg;
-    bool testVal = query.pointQuery(qctree,&cell,&cagg);
+    bool retVal = query.pointQuery(qctree,&cell,&cagg);
 
     *agg = cagg.sum;
     *count = cagg.count;
     *min = cagg.min;
     *max = cagg.max;
+
+    return retVal;
 }
 
-void QCTree::query(vector<string> s,double *agg,unsigned long long  *count,double* min,double* max)
+bool QCTree::query(vector<string> s,double *agg,unsigned long long  *count,double* min,double* max)
 {
     QCTreeQuery query;
     Cell cell;
     cell.setDimensions(s);
     CellAggregate cagg;
-    bool testVal = query.rangeQuery(qctree,&cell,&cagg);
+    bool retVal = query.rangeQuery(qctree,&cell,&cagg);
 
     *agg = cagg.sum;
     *count = cagg.count;
     *min = cagg.min;
     *max = cagg.max;
+
+    return retVal;
 }
 
 void QCTree::printTree()

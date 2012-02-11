@@ -92,13 +92,14 @@ void Testcase1::testPointQuery(QCTree* tree,vector<string> v,int val)
 {
 
     QCTreeQuery query;
-    int agg = 0;
-    float avg = 0;
+    double agg = 0;
+    long long unsigned int avg = 0;
+    double min,max;
     Cell cell;
     bool testVal;
 
     cell.setDimensions(v);
-    testVal = query.pointQuery(tree->qctree,&cell,&agg,&avg);
+    testVal = tree->query(v,&agg,&avg,&min,&max);
 
     if(val == -1)
     {
@@ -116,13 +117,14 @@ void Testcase1::testRangeQuery(QCTree* tree,vector<string> v,int val)
 {
 
     QCTreeQuery query;
-    int agg = 0;
-    float avg = 0;
+    double agg = 0;
+    long long unsigned int avg = 0;
+    double min,max;
     Cell cell;
     bool testVal;
 
     cell.setDimensions(v);
-    testVal = query.rangeQuery(tree->qctree,&cell,&agg,&avg);
+    testVal = tree->query(v,&agg,&avg,&min,&max);
 
     if(val == -1)
     {
@@ -192,10 +194,10 @@ void Testcase1::TestQuery(QCTree* tree)
 
     char s[10] ="Tor * *";
 
-    int agg = 0;
-    float avg;
+    long long unsigned int avg = 0;
+    double agg,min,max;
 
-    tree->query(s,&agg,&avg);
+    tree->query(s,&agg,&avg,&min,&max);
 
     long long int llagg = agg;
 
@@ -363,7 +365,7 @@ void Testcase1::TestTemporaryClasses1(void)
     string aggreegates = "27, 15, 18, 18, 6, 6, 12, 12, 9, 9, 9";
     testAggregates(tree,aggreegates);
 
-    //testSerialize(tree);
+    testSerialize(tree);
 }
 
 void Testcase1::testSerialize(QCTree* tree)

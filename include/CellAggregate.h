@@ -39,7 +39,7 @@ public:
 
     friend ostream& operator<< (ostream &out, CellAggregate &agg)
     {
-        out <<agg.sum << " "<<agg.count << " "<<agg.min << " "<<agg.max << " ";
+        out <<agg.sum <<" "<<agg.count <<" "<<agg.min <<" "<<agg.max <<" ";
     }
     friend istream& operator>> (istream &in, CellAggregate &agg)
     {
