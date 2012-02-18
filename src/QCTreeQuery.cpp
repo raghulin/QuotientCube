@@ -1,5 +1,4 @@
 #include "QCTreeQuery.h"
-
 #include "QCTreeNode.h"
 #include "QCTreeQuery.h"
 
@@ -45,7 +44,7 @@ bool QCTreeQuery::pointQuery(QCTreeNode* root,Cell* cell,CellAggregate* aggregat
 
         QCTreeNode* tempNode = newRoot->searchRoute(cell->valueAt(i));
 
-        if(tempNode != NULL && tempNode->dimension == i)
+        if(tempNode != NULL /*&& tempNode->dimension == i*/)
         {
             newRoot = tempNode;
         }
@@ -202,8 +201,6 @@ bool QCTreeQuery::rangeQuery(QCTreeNode* root,Cell* query,CellAggregate* aggrega
             }
         }
     }
-
-
 
     return true;
 }

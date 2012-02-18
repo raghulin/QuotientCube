@@ -3,7 +3,7 @@
 CellAggregate::CellAggregate()
 {
     sum = 0;
-    count = 0;
+    count = 1;
     //min = 0;
     //max = 0;
     //ctor
@@ -32,7 +32,8 @@ CellAggregate& CellAggregate::operator=(const CellAggregate& rhs)
     count = rhs.count;
     min = rhs.min;
     max = rhs.max;
-    //m_isValid = rhs.isValid();
+    CellAggregate* c = (CellAggregate* )&rhs;
+    m_isValid = c->isValid();
 
     return *this;
 }
@@ -41,14 +42,29 @@ CellAggregate& CellAggregate::operator=(const CellAggregate& rhs)
 CellAggregate& CellAggregate::operator+=(const CellAggregate& rhs)
 {
 
-    sum += rhs.sum;
-    count += rhs.count;
-
-    if(min > rhs.min)
+    if(!m_isValid)
+    {
         min = rhs.min;
-
-    if(max < rhs.max)
         max = rhs.max;
+        count = rhs.count;
+        sum = rhs.sum;
+    }
+    else
+    {
+        count += rhs.count;
+        sum += rhs.sum;
+
+        if(min > rhs.min)
+        {
+            min = rhs.min;
+        }
+
+        if(max < rhs.max)
+        {
+            max = rhs.max;
+        }
+
+    }
 
     m_isValid = true;
 
@@ -57,16 +73,28 @@ CellAggregate& CellAggregate::operator+=(const CellAggregate& rhs)
 
 CellAggregate& CellAggregate::operator+=(const double& val)
 {
-
-    sum += val;
-    count++;
-
-    if(min > val)
+    if(!m_isValid)
+    {
         min = val;
-
-    if(max < val)
         max = val;
+        sum = val;
+        count = 1;
+    }
+    else
+    {
+        sum += val;
+        count++;
 
+        if(min > val)
+        {
+            min = val;
+        }
+
+        if(max < val)
+        {
+            max = val;
+        }
+    }
     m_isValid = true;
 
     return *this;
@@ -80,18 +108,24 @@ void CellAggregate::operator+(const double& val)
     {
         min = val;
         max = val;
+        sum = val;
+        count = 1;
     }
     else
     {
+        sum	 += val;
+        count++;
+
         if(min > val)
+        {
             min = val;
+        }
 
         if(max < val)
+        {
             max = val;
+        }
     }
-
-    sum	 += val;
-    count++;
 
     m_isValid = true;
 }
@@ -111,7 +145,3 @@ bool CellAggregate::isValid()
 {
     return m_isValid;
 }
-
-
-
-

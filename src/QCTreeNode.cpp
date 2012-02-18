@@ -1,7 +1,7 @@
 #include "QCTreeNode.h"
-
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 
 QCTreeNode::QCTreeNode()
@@ -105,7 +105,7 @@ QCTreeNode* QCTreeNode::findChild(string key)
 QCTreeNode* QCTreeNode::searchRoute(string vi)
 {
 
-//find a route from newRoot to a node labelled vi
+    //find a route from newRoot to a node labelled vi
     QCTreeNode* newRoot = NULL;
 
 
@@ -115,8 +115,8 @@ QCTreeNode* QCTreeNode::searchRoute(string vi)
     }
 
 
-//if newRoot has a child or link pointing to N labelled vi
-//newRoot = N ;
+    //if newRoot has a child or link pointing to N labelled vi
+    //newRoot = N ;
     newRoot = findChild(vi);
 
     if(newRoot == NULL)
@@ -169,6 +169,7 @@ bool QCTreeNode::insertNodes(Cell* cell1,QCTreeNode** newNode)
             if(!isNodeInserted)
             {
                 node->aggregate = cell->aggregate;
+                node->aggregate.setValid();
             }
             else
             {
@@ -268,14 +269,13 @@ void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *no
     *sbuff >>hex>>addr;
     *sbuff >>value;
 
-    *sbuff >>sAgg;
-    dimension = atoi(sAgg.c_str());
+    *sbuff >>dimension;
 
     *sbuff >>aggregate;
     nodeMap->insert(pair<int,QCTreeNode*>(addr,this));
 
-    *sbuff >>sAgg;
-    int noOfChildren=atoi(sAgg.c_str());
+    int noOfChildren =0 ;
+    *sbuff >>noOfChildren;
 
     for(int i=0; i < noOfChildren; i++)
     {
@@ -285,8 +285,8 @@ void QCTreeNode::deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *no
         children.insert(pair<const char*,QCTreeNode*>(newChild->value.c_str(),newChild));
     }
 
-    *sbuff >>sAgg;
-    int noOfDrillDowns=atoi(sAgg.c_str());
+    int noOfDrillDowns =0 ;
+    *sbuff >>noOfDrillDowns;
 
     for(int i=0; i < noOfDrillDowns; i++)
     {
