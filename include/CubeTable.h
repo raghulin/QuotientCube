@@ -6,6 +6,26 @@
 #include <iostream>
 #include <vector>
 
+class CubeTableRow 
+{
+    
+public:
+    
+    vector<string> dimensions;
+    vector<double> measures;
+    
+    CubeTableRow& operator=(const CubeTableRow& rhs)
+    {
+        if (this == &rhs) return *this; // handle self assignment
+        //assignment operator
+        
+        dimensions = rhs.dimensions;
+        measures = rhs.measures;
+        
+        return *this;
+    }
+};
+
 class CubeTable
 {
 
@@ -15,7 +35,7 @@ class CubeTable
 public:
 
     vector< vector <string> > indexes;
-    vector < vector <string> > table;
+    vector < CubeTableRow > table;
 
     /** Default constructor */
     CubeTable();
@@ -41,8 +61,15 @@ public:
 
     void addCol(string col);
     void addMeasure(string col);
-    void addRow(vector<string>& row);
-    void addRow(string row);
+    void addRow(CubeTableRow& row);
+    void addRow(string row,vector<double> m);
+    void addRow(string row,double m)
+    {
+        vector<double> md;
+        md.push_back(m);
+        
+        addRow(row,md);
+    }
 
 protected:
 

@@ -2,6 +2,8 @@
 #include "QCTreeNode.h"
 #include "QCTreeQuery.h"
 
+
+
 QCTreeQuery::QCTreeQuery()
 {
     //ctor
@@ -174,9 +176,9 @@ bool QCTreeQuery::rangeQuery(QCTreeNode* root,Cell* query,CellAggregate* aggrega
                 Call rangeQuery(q, newRoot, i + 1)
     */
 
-    unsigned int pos = query->valueAt(i).find(" ");
+    char* cindex = index(query->valueAt(i).c_str(),' ');
 
-    if(pos == string::npos)
+    if(cindex != NULL)
     {
         newRoot = newRoot->searchRoute(query->valueAt((i)));
 

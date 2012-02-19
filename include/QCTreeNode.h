@@ -19,8 +19,6 @@ struct eqstr1
 
 class QCTreeNode
 {
-
-
     hash_map<const char*, QCTreeNode*, hash<const char*>, eqstr1>  children;
     hash_map<const char*, QCTreeNode*, hash<const char*>, eqstr1>  drillDowns;
 
@@ -31,7 +29,7 @@ public:
     int dimension;
 
     CellAggregate aggregate;
-
+    
     /** Default constructor */
     QCTreeNode();
     /** Default destructor */
@@ -60,17 +58,19 @@ public:
 
     QCTreeNode* searchRoute(string vi);
 
-    void deserialize(istream *sbuff,map<int,QCTreeNode*> *nodeMap);
-    void deserializeNoDrillDowns(istream *sbuff,map<int,QCTreeNode*> *nodeMap);
+    void deserialize(istream *sbuff);
     void serialize(ostream *sbuff);
-
-    void replaceDrillDowns(map<int,QCTreeNode*> *nodeMap);
 
     void print();
     void printToStream(fstream *fout);
 
 protected:
+    void deserializeDrilldowns(istream *sbuff,map<unsigned int,QCTreeNode*> *nodeMap);
+    void deserializeChildren(istream *sbuff,map<unsigned int,QCTreeNode*> *nodeMap);
+    void serializeChildren(ostream *sbuff);
+    void serializeDrilldowns(ostream *sbuff);
 private:
+    unsigned int nodeId;
 };
 
 #endif // QCTREENODE_H

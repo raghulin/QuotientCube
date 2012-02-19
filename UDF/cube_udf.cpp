@@ -107,14 +107,21 @@ void ccube_add( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error 
 {
     ccube_data *buffer = (ccube_data*)initid->ptr;
     vector<string> v;
-    for(int i = 0 ; i < (buffer->dimensions + buffer->measures); i++)
+    vector<double> m;
+    int i=0;
+    for( ; i < buffer->dimensions ; i++)
     {
         char* s = (char*) malloc(args->lengths[i]);
         memcpy(s,args->args[i], args->lengths[i]);
         s[args->lengths[i]] = '\0';
         v.push_back(s);
     }
-    buffer->tree->baseTable->addRow(v);
+    for( ; i < (buffer->dimensions + buffer->measures); i++)
+    {
+        m.push_back(args->args[i]);
+    }
+
+    buffer->tree->baseTable->addRow(v,m);
 }
 
 double ccube( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error )

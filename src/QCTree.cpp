@@ -328,9 +328,7 @@ void QCTree::deserialize()
 
     filestr1.open ("qctree.txt", fstream::in );
 
-    map<int,QCTreeNode*> nodemap;
-
-    qctree->deserialize(&filestr1,&nodemap);
+    qctree->deserialize(&filestr1);
 
     filestr1.close();
 }
