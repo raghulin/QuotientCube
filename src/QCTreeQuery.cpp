@@ -175,7 +175,7 @@ bool QCTreeQuery::rangeQuery(QCTreeNode* root,Cell* query,CellAggregate* aggrega
             if newRoot is not NULL
                 Call rangeQuery(q, newRoot, i + 1)
     */
-
+    /*
     const char* cindex = index(query->valueAt(i).c_str(),' ');
 
     if(cindex != NULL)
@@ -187,7 +187,7 @@ bool QCTreeQuery::rangeQuery(QCTreeNode* root,Cell* query,CellAggregate* aggrega
             rangeQuery(newRoot,query,aggregate,i+1);
         }
     }
-    else
+    else */
     {
         Cell c;
         c.setDimensions(query->valueAt(i),' ');

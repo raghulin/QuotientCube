@@ -97,12 +97,12 @@ void CubeTable::addRow(string row,vector<double> m)
     CubeTableRow trow;
     vector<string> tokens;
     istringstream iss(row);
-    
+
     copy(istream_iterator<string>(iss),
          istream_iterator<string>(),
          back_inserter< vector<string> >(tokens)
          );
-    
+
     trow.dimensions = tokens;
     trow.measures = m;
     addRow(trow);
@@ -112,7 +112,7 @@ void CubeTable::addRow(string row,double m)
 {
 		vector<double> md;
 		md.push_back(m);
-      
+
 		addRow(row,md);
 }
 
@@ -152,7 +152,7 @@ void CubeTable::computeAggregate(vector<string>& cols,CellAggregate* aggregateVa
     vector< CubeTableRow >::iterator iter_ii;
     for(iter_ii=table.begin(); iter_ii!=table.end(); iter_ii++)
     {
-        for(unsigned int i = cz ; i< (cz + m_measures.size()); i++)
+        for(unsigned int i =0 ; i< (m_measures.size()); i++)
         {
 
             unsigned int j = 0;

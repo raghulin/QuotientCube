@@ -26,8 +26,8 @@ public:
     void testUppers(QCTree* tree,string outputUppers);
     void testAggregates(QCTree* tree,string aggregates);
 
-    void testPointQuery(QCTree* tree,vector<string> v,int val);
-    void testRangeQuery(QCTree* tree,vector<string> v,int val);
+    void testPointQuery(QCTree* tree,vector<string> v,double val);
+    void testRangeQuery(QCTree* tree,vector<string> v,double val);
     void testSerialize(QCTree* tree);
 
     void TestTemporaryClasses(void);
