@@ -63,13 +63,7 @@ public:
     void addMeasure(string col);
     void addRow(CubeTableRow& row);
     void addRow(string row,vector<double> m);
-    void addRow(string row,double m)
-    {
-        vector<double> md;
-        md.push_back(m);
-        
-        addRow(row,md);
-    }
+    void addRow(string row,double m);
 
 protected:
 

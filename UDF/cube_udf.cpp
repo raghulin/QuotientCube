@@ -118,10 +118,13 @@ void ccube_add( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error 
     }
     for( ; i < (buffer->dimensions + buffer->measures); i++)
     {
-        m.push_back(args->args[i]);
+        m.push_back(*((double *)args->args[i]));
     }
-
-    buffer->tree->baseTable->addRow(v,m);
+    
+    CubeTableRow row;
+    row.dimensions = v;
+    row.measures = m;
+    buffer->tree->baseTable->addRow(row);
 }
 
 double ccube( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error )

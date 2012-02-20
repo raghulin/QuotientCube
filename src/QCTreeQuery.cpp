@@ -176,7 +176,7 @@ bool QCTreeQuery::rangeQuery(QCTreeNode* root,Cell* query,CellAggregate* aggrega
                 Call rangeQuery(q, newRoot, i + 1)
     */
 
-    char* cindex = index(query->valueAt(i).c_str(),' ');
+    const char* cindex = index(query->valueAt(i).c_str(),' ');
 
     if(cindex != NULL)
     {

@@ -108,6 +108,14 @@ void CubeTable::addRow(string row,vector<double> m)
     addRow(trow);
 }
 
+void CubeTable::addRow(string row,double m)
+{
+		vector<double> md;
+		md.push_back(m);
+      
+		addRow(row,md);
+}
+
 void CubeTable::getAllUniqueValues(int coloumn,vector<string> *values)
 {
     vector< CubeTableRow >::iterator iter_ii;
