@@ -36,6 +36,7 @@ Sample run:
 ============
 	Following runs are done on un optimized tpch data tables. QC Tree query time include tree deserialization from file for every query.
 
+============
 mysql> select ccube(D1,D2,D3,M1) from TT;
 +----------------------+
 | ccube(D1,D2,D3,M1)   |
@@ -60,6 +61,7 @@ mysql> select SUM(M1) from TT;
 +-----------------+
 1 row in set (0.59 sec)
 
+============
 mysql> select SUM(M1) from TT where D3='TRUCK' and D1='F';
 +------------------+
 | SUM(M1)          |
@@ -70,12 +72,13 @@ mysql> select SUM(M1) from TT where D3='TRUCK' and D1='F';
 
 mysql> select ccube_query("F","*","TRUCK");
 +-----------------------------------------------------------------------------------------------------------------------+
-| ccube_query("F","*","TRUCK")   													|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+| ccube_query("F","*","TRUCK")   											|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 +-----------------------------------------------------------------------------------------------------------------------+
-| SUM = 21401.300000 Count = 427609 Min = 0.000000 Max = 0.100000          				                                |
+| SUM = 21401.300000 Count = 427609 Min = 0.000000 Max = 0.100000          		                                |
 +-----------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.02 sec)
 
+============
 mysql> select SUM(M1) from TT where (D3='TRUCK' OR D3='FOB' OR D3='SHIP') and D1='F';
 +------------------+
 | SUM(M1)          |
@@ -92,6 +95,7 @@ mysql> select ccube_query("F","*","TRUCK FOB SHIP");
 +------------------------------------------------+
 1 row in set (0.02 sec)
 
+============
 mysql> select SUM(M1) from TT where (D3='FOB' OR D3='SHIP') and D1='F';
 +------------------+
 | SUM(M1)          |
@@ -110,8 +114,8 @@ mysql> select count(*) from TT where (D3='FOB' OR D3='SHIP') and D3='F';
 
 mysql> select ccube_query("F","*","FOB SHIP");                           
 +-----------------------------------------------------------------------------------------------------------------------+
-| ccube_query("F","*","FOB SHIP")                                                                                        		|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+| ccube_query("F","*","FOB SHIP")                                                                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 +-----------------------------------------------------------------------------------------------------------------------+
-| SUM = 42861.400000 Count = 856645 Min = 0.000000 Max = 0.100000                                                                       |
+| SUM = 42861.400000 Count = 856645 Min = 0.000000 Max = 0.100000                                                       |
 +-----------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.03 sec)
