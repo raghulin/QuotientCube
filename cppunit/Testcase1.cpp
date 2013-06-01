@@ -3,6 +3,8 @@
 #include <iostream>
 #include <QCTree.h>
 #include <QCTreeQuery.h>
+#include <QCTreeSerialize.h>
+#include <QCTreeDeserialize.h>
 #include <Cell.h>
 
 using namespace std;
@@ -156,7 +158,7 @@ void Testcase1::TestTemporaryClasses(void)
 
     tree->printTempClasses();
     cout<<" ------------------------ TREE -------------------" <<endl;
-    tree->printTree();
+    //tree->printTree();
 
     vector<QCTreeItem*> tempClasses = tree->classes;
     vector <QCTreeItem*> :: const_iterator nodeIter;
@@ -330,7 +332,7 @@ void Testcase1::TestTemporaryClasses1(void)
 
     tree->printTempClasses();
     cout<<" ------------------------ TREE -------------------" <<endl;
-    tree->printTree();
+    //tree->printTree();
 
 
     cout<<endl<<" ------------------------ Testcase -------------------" <<endl;
@@ -357,12 +359,16 @@ void Testcase1::TestTemporaryClasses1(void)
 
 void Testcase1::testSerialize(QCTree* tree)
 {
-
-    tree->serialize();
-
+    QCTreeSerialize* serializer = new QCTreeSerialize();
+    ofstream qcfile("qctree.txt");
+    serializer->serialize(tree, (ostream *)&qcfile);
+    qcfile.close();
+    
     QCTree* newTree = new QCTree();
-
-    newTree->deserialize();
+    QCTreeDeserialize* deserializer = new QCTreeDeserialize();
+    ifstream qcfile1("qctree.txt");
+    deserializer->deserialize(newTree, (istream*)&qcfile1);
+    qcfile1.close();
 
     TestQuery(newTree);
 
