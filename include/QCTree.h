@@ -32,10 +32,6 @@ public:
     void DFS(Cell* c,CubeTable* partition,int k,int pID);
     void sortIntermediate();
 
-    void serialize();
-    void deserialize();
-
-
     void printTree();
     void printTempClasses();
 

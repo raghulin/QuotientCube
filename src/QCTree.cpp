@@ -302,36 +302,6 @@ void QCTree::DFS(Cell* c,CubeTable* partition,int k,int pID)
     */
 }
 
-void QCTree::serialize()
-{
-    fstream filestr;
-
-    //TODO:
-    // 1. get table name from UDF. Serialize with table name.
-    // 2. store in memory table
-
-    filestr.open ("qctree.txt", fstream::out );
-
-    qctree->serialize(&filestr);
-
-    filestr.close();
-
-}
-
-void QCTree::deserialize()
-{
-    fstream filestr1;
-
-    //TODO:
-    // 1. get table name from UDF. Serialize with table name.
-    // 2. read from in memory table
-
-    filestr1.open ("qctree.txt", fstream::in );
-
-    qctree->deserialize(&filestr1);
-
-    filestr1.close();
-}
 
 bool QCTree::query(const char* s,double *agg,	unsigned long long  *count,double* min,double* max)
 {

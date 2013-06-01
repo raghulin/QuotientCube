@@ -22,10 +22,14 @@
 */
 
 #include <QCTree.h>
+#include <QCTreeSerialize.h>
+#include <QCTreeDeserialize.h>
 
 #ifdef STANDARD
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+#include <fstream>
 
 #ifdef __WIN__
 typedef unsigned __int64 ulonglong;
@@ -130,8 +134,12 @@ void ccube_add( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error 
 double ccube( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char* is_error )
 {
     ccube_data *buffer = (ccube_data*)initid->ptr;
-    buffer->tree->constructTree();
-    buffer->tree->serialize();
+    QCTree* tree = buffer->tree;
+    tree->constructTree();
+    QCTreeSerialize* serializer = new QCTreeSerialize();
+    ofstream qcfile("qctree.txt");
+    serializer->serialize(tree, (ostream *)&qcfile);
+    qcfile.close();
 }
 
 
@@ -144,7 +152,8 @@ my_bool ccube_query_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
     initid->max_length	= 80;
 
     buffer->aggValues = (char*) malloc(80);
-    bzero(buffer->aggValues,80);
+    //bzero(buffer->aggValues,80);
+    memset(buffer->aggValues,0,80);
     buffer->aggValues[79] = '\0';
 
     initid->ptr = (char*)buffer;
@@ -172,8 +181,11 @@ char* ccube_query( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char *error 
     double min;
     double max;
     unsigned long long count;
-
-    tree->deserialize();
+    
+    QCTreeDeserialize* deserializer = new QCTreeDeserialize();
+    ifstream qcfile("qctree.txt");
+    deserializer->deserialize(tree, (istream*)&qcfile);
+    qcfile.close();
 
     if(args->arg_count == 1)
     {
@@ -202,7 +214,7 @@ char* ccube_query( UDF_INIT* initid, UDF_ARGS* args, char* is_null, char *error 
         }
     }
 
-    sprintf(buffer->aggValues,"SUM = %f Count = %lld Min = %f Max = %f \0",sum,count,min,max);
+    sprintf(buffer->aggValues,"SUM = %f Count = %lld Min = %f Max = %f \n",sum,count,min,max);
     return buffer->aggValues;
 }
 

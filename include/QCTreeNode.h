@@ -19,11 +19,11 @@ struct eqstr1
 
 class QCTreeNode
 {
+public:
+    
     hash_map<const char*, QCTreeNode*, hash<const char*>, eqstr1>  children;
     hash_map<const char*, QCTreeNode*, hash<const char*>, eqstr1>  drillDowns;
-
-public:
-
+    
     string value;
 
     int dimension;
@@ -58,18 +58,9 @@ public:
 
     QCTreeNode* searchRoute(string vi);
 
-    void deserialize(istream *sbuff);
-    void serialize(ostream *sbuff);
-
     void print();
     void printToStream(fstream *fout);
 
-protected:
-    void deserializeDrilldowns(istream *sbuff,map<unsigned int,QCTreeNode*> *nodeMap);
-    void deserializeChildren(istream *sbuff,map<unsigned int,QCTreeNode*> *nodeMap);
-    void serializeChildren(ostream *sbuff);
-    void serializeDrilldowns(ostream *sbuff);
-private:
     unsigned int nodeId;
 };
 
